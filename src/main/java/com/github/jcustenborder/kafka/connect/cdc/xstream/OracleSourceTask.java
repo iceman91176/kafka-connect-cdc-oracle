@@ -19,16 +19,26 @@ import com.google.common.util.concurrent.Service;
 import com.github.jcustenborder.kafka.connect.cdc.BaseServiceTask;
 import com.github.jcustenborder.kafka.connect.cdc.ChangeWriter;
 import org.apache.kafka.connect.storage.OffsetStorageReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-class OracleSourceTask extends BaseServiceTask<OracleSourceConnectorConfig> {
+public class OracleSourceTask extends BaseServiceTask<OracleSourceConnectorConfig> {
   ChangeWriter changeWriter;
+  private static final Logger log = LoggerFactory.getLogger(OracleSourceTask.class);
 
   @Override
   protected Service service(ChangeWriter changeWriter, OffsetStorageReader offsetStorageReader) {
     this.changeWriter = changeWriter;
+    log.info("Ready to create the QueryService...");
     return new QueryService(this.config, offsetStorageReader, this.changeWriter);
+  }
+  
+  @Override
+  public void start(Map<String, String> map) {
+    log.info("Starting OracleSourceTask");
+    super.start(map);
   }
 
   @Override

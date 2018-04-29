@@ -82,7 +82,9 @@ class QueryService extends AbstractExecutionThreadService {
     while (isRunning()) {
       try {
         OracleChange change = receiveChange();
-        this.changeWriter.addChange(change);
+        if (change != null) {
+          this.changeWriter.addChange(change);
+        }
       } catch (Exception ex) {
         log.error("Exception thrown", ex);
       }
