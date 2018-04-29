@@ -251,6 +251,10 @@ class OracleChange implements Change {
         case RowLCR.UPDATE:
           change.changeType = ChangeType.UPDATE;
           break;
+        case RowLCR.DELETE:
+          change.changeType = ChangeType.UPDATE;
+          row.setNewValues(row.getOldValues());
+          break;
         default:
           throw new UnsupportedOperationException(
               String.format("CommandType of '%s' is not supported.", row.getCommandType())
@@ -281,6 +285,7 @@ class OracleChange implements Change {
             schema,
             value
         );
+        log.trace("Adding Column {} with value {}", outputColumnValue.columnName(), outputColumnValue.value());
         valueColumns.add(outputColumnValue);
 
         if (tableMetadata.keyColumns().contains(columnValue.getColumnName())) {
@@ -309,7 +314,7 @@ class OracleChange implements Change {
       }
       change.keyColumns = keyColumns;
       change.valueColumns = valueColumns;
-
+      
       log.trace("{}: Converted {} key(s) {} value(s) for row='{}'", changeKey, change.keyColumns().size(), change.valueColumns().size(), position);
 
       return change;
