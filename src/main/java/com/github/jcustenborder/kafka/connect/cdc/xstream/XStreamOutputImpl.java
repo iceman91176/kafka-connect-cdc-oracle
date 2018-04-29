@@ -50,7 +50,8 @@ class XStreamOutputImpl implements XStreamOutput {
   @Override
   public LCR receiveLCR() throws StreamsException {
     log.trace("receiveLCR() - XStreamOut.receiveLCR(XStreamOut.DEFAULT_MODE | XStreamOut.NEW_COLUMN_ONLY_MODE);");
-    return this.xStreamOut.receiveLCR(XStreamOut.DEFAULT_MODE | XStreamOut.NEW_COLUMN_ONLY_MODE);
+    //return this.xStreamOut.receiveLCR(XStreamOut.DEFAULT_MODE | XStreamOut.NEW_COLUMN_ONLY_MODE);
+    return this.xStreamOut.receiveLCR(XStreamOut.DEFAULT_MODE);
   }
 
   @Override
